@@ -1,0 +1,66 @@
+﻿@model trial.Models.Trips
+@inject IHttpContextAccessor _contx;
+
+@{
+    ViewData["Title"] = "Trip Details";
+    <link rel="stylesheet" href="~/css/TripDetails.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    Layout = null;
+}
+
+<div class="container mt-4">
+    <div class="card mb-4 shadow-sm trip-card">
+        @if (Model.dbImage != null && Model.dbImage.Length > 0)
+        {
+            <img src="data:image;base64,@Convert.ToBase64String(Model.dbImage)" class="card-img-top" alt="Trip Image">
+        }
+        <div class="card-body">
+            <h1 class="card-title">@Model.tripName</h1>
+            <p class="card-text">@Model.Description</p>
+            <p class="price"><strong>Price:</strong> @Model.Price</p>
+                <form asp-action="addbook" asp-controller="book" method="post">
+              
+                <input type="hidden" name="TripId" value="@Model.Id" />
+                @if (Context.Session.GetString("PersonEmail") == null)
+                {
+                    <p>Please log in to book this trip.</p>
+
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary">Book</button>
+
+                }
+            </form>
+        </div>
+    </div>
+
+    <div class="comments-section">
+        <h2>Comments</h2>
+        @if (ViewBag.Comments != null && ((List<trial.Models.Comment>)ViewBag.Comments).Any())
+        {
+            foreach (var comment in (List<trial.Models.Comment>)ViewBag.Comments)
+            {
+                <div class="comment">
+                    <p>@comment.Content</p>
+                    <small>By @comment.Person.Name on @comment.CreatedAt.ToString("MM/dd/yyyy")</small>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No comments yet. Be the first to comment!</p>
+        }
+
+        <div class="add-comment">
+            <form asp-action="AddComment" asp-controller="Comment" method="post">
+                <div class="form-group">
+                    <label for="content">Add a Comment</label>
+                    <textarea id="content" name="content" class="form-control" rows="3" required></textarea>
+                </div>
+                <input type="hidden" name="tripId" value="@Model.Id" />
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

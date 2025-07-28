@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Country>
+@{
+    ViewData["Title"] = "View All Countries";
+}
+
+<div class="container p-3">
+
+    <partial name="_Notifications"></partial>
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">View All Countries</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Country" asp-action="New" class="btn btn-primary">
+                <i class="bi bi-plus"></i> &nbsp; Add New Item
+            </a>
+        </div>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col"> Country Id</th>
+
+
+            <th scope="col"> Country Name</th>
+
+            <th scope="col"> Country Image</th>
+
+            
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var country in Model)
+            {
+                <tr class="table-primary">
+                    
+                    <td scope="row" width="20%">
+                        @country.Id
+                    </td>
+                    <td scope="row" width="30%">
+                    @country.CountryName
+                    <td>
+                     <td scope="row" width="30%">
+                           <img src="@country.imageSrc" style="width:48px" class="img-thumbnail"/>
+                    <td>
+                    <a asp-controller="Country" asp-action="Delete" asp-route-Id="@country.Id" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    <a asp-controller="Country" asp-action="Edit" asp-route-Id="@country.Id" class="btn btn-sm btn-success">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </td>
+                </tr>
+
+        }
+    </tbody>
+</table>
+

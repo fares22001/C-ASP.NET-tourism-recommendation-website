@@ -1,0 +1,45 @@
+﻿@model trial.Models.Country
+@{
+    ViewData["Title"] = "Edit Country";
+}
+
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Country</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3">
+            <label asp-for="CountryName">Country Name</label>
+            <input asp-for="CountryName" class="form-control" />
+            <span asp-validation-for="CountryName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="clientFile">Country Image</label>
+            <input type="file" asp-for="clientFile" class="form-control" onchange="loadFile(event)" />
+            <span asp-validation-for="clientFile" class="text-danger"></span>
+        </div>
+        <img id="myImg" height="200" style="margin-top: 10px;" /> <!-- Preview Image -->
+
+        <br />
+        <hr />
+
+        <button type="submit" class="btn btn-primary" style="width:150px">Save</button>
+        <a asp-action="Index" asp-controller="Country" class="btn btn-secondary" style="width:150px">Back to Items</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial.cshtml" />
+    <script>
+        var loadFile = function (event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var myImg = document.getElementById('myImg');
+                myImg.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+}

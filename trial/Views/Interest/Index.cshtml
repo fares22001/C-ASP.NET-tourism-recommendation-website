@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@model IEnumerable<trial.Models.DBinterest>
+
+@{
+    ViewData["Title"] = "All Interests";
+    Layout = "_Layout";
+}
+
+<h2>All Interests</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var interest in Model)
+        {
+                <tr>
+                    <td>@interest.Name</td>
+                      <td>
+                    <form asp-action="DeleteInterest" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@interest.ID" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+                 </tr>
+        }
+    </tbody>
+</table>

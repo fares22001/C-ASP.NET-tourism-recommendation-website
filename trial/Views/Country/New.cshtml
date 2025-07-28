@@ -1,0 +1,35 @@
+﻿@model trial.Models.Country
+@{
+    ViewData["Title"] = "New";
+}
+
+<form asp-action="New" method="post" enctype="multipart/form-data">
+    <div class="border p-3 mt-4">
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3">
+            <label asp-for="CountryName">Country Name</label>
+            <input asp-for="CountryName" class="form-control" />
+            <span asp-validation-for="CountryName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="clientFile">Image</label>
+            <input type="file" asp-for="clientFile" class="form-control" onchange="loadFile(event)" />
+            <img id="myImg" height="200" style="margin-top: 10px;" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Save</button>
+        <a asp-action="Index" class="btn btn-secondary" style="width:150px">Back to Items</a>
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial.cshtml" />
+    <script>
+        var loadFile = function (event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var myImg = document.getElementById('myImg');
+                myImg.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+}

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<trial.Models.Person>
+@{
+    ViewData["Title"] = "Index";
+}
+ 
+ 
+
+
+<div class="container p-3">
+    <partial name="_Notifications"></partial>
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">View All Users</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Admin" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus"></i> &nbsp; Add New User
+            </a>
+        </div>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">User Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col">Role</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in Model)
+        {
+            <tr class="table-primary">
+                <td scope="row" width="10%">@person.Id</td>
+                <td scope="row" width="10%">@person.Name</td>
+                <td scope="row" width="20%">@person.Email</td>
+                <td scope="row" width="10%">@person.MobileNumber</td>
+                <td scope="row" width="10%">@person.Role</td>
+                <td scope="row" width="20%">
+                    <a asp-controller="Admin" asp-action="Delete" asp-route-id="@person.Id" class="btn btn-sm btn-danger">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                    <a asp-controller="Admin" asp-action="Edit" asp-route-id="@person.Id" class="btn btn-sm btn-success">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

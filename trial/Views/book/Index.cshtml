@@ -1,0 +1,26 @@
+﻿@model IEnumerable<trial.Models.Book>
+
+<h2>All Bookings</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Trip.tripName</td>
+                <td>
+                    <form asp-action="Delete" asp-controller="book" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@book.ID" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

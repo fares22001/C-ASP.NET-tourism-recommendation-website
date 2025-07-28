@@ -1,0 +1,26 @@
+﻿@model IEnumerable<trial.Models.Country>
+@{
+    ViewData["Title"] = "View Countries";
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+}
+
+<h1>Countries</h1>
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var country in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="@country.imageSrc" class="card-img-top" alt="@country.CountryName" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@country.CountryName</h5>
+                        <a href="@Url.Action("CountryTrips", "Browse", new { countryId = country.Id })" class="btn btn-primary">View Trips</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

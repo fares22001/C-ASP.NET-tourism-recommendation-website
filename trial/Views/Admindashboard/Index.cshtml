@@ -1,0 +1,112 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = null;
+}
+
+<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="~/css/adminDashboard.css">
+
+<partial name="_SidebarAdmin"></partial>
+<!-- SIDEBAR -->
+<!-- CONTENT -->
+<section id="content">
+    <!-- NAVBAR -->
+    <partial name="_NavBar"></partial>
+    <!-- NAVBAR -->
+    <!-- MAIN -->
+    <main>
+        <div class="head-title">
+            <div class="left">
+                <h1>Dashboard</h1>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="">Dashboard</a>
+                    </li>
+                    <li><i class='bx bx-chevron-right'></i></li>
+                    <li>
+                        <a class="active" href="#">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <ul class="box-info">
+            <li>
+                <i class='bx bx-current-location'></i>
+                <span class="text">
+                    <h3>@ViewBag.CountryCount</h3>
+                    <p>Number of Countries</p>
+                </span>
+            </li>
+            <li>
+                <i class='bx bxs-group'></i>
+                <span class="text">
+                    <h3>@ViewBag.UserCount</h3>
+                    <p>Number of Users</p>
+                </span>
+            </li>
+            <li>
+                <i class='bx bxs-bar-chart-alt-2'></i>
+                <span class="text">
+                    <h3>@ViewBag.ReviewCount</h3>
+                    <p>Number of Reviews</p>
+                </span>
+            </li>
+        </ul>
+
+        <div class="table-data">
+            <div class="order">
+                <div class="head">
+                    <h3>Recent Reviews</h3>
+                    <i class='bx bx-search'></i>
+                    <i class='bx bx-filter'></i>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>UserName</th>
+                            <th>Location</th>
+                            <th>Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p>Ahmed hossam</p>
+                            </td>
+                            <td>nasr city</td>
+                            <td>asdadadad</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Ahmed osos</p>
+                            </td>
+                            <td>obour</td>
+                            <td>ajdajanlasda</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Mohamed hossam</p>
+                            </td>
+                            <td>Nasr city</td>
+                            <td>adlkadljadlj</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>fares</p>
+                            </td>
+                            <td>obour</td>
+                            <td>adlkadljadlj</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </main>
+    <!-- MAIN -->
+</section>
+
+@section Scripts {
+    <script src="~/js/site.js"></script>
+}

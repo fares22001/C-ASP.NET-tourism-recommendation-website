@@ -1,0 +1,213 @@
+﻿@inject IHttpContextAccessor _contx;
+
+@model IEnumerable<Country>
+
+@{
+    ViewData["Title"] = "AddInterest";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <link href="~/css/Interest.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter City Name" id="city-input">
+            <button id="search-btn"><img src="~/Images/search.png" alt="search icon"></button>
+        </div>
+        <div class="error" style="display: none;">
+            <p>Invalid City Name</p>
+        </div>
+        <div class="weather" style="display: none;">
+            <img src="~/Images/rain.png" class="weather-icon" id="weather-icon" alt="weather icon" />
+            <h1 class="temp" id="temperature">22°C</h1>
+            <h2 class="city" id="city-name">New York</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="~/Images/humidity.png" alt="humidity icon" />
+                    <div>
+                        <p class="humidity" id="humidity">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="~/Images/Wind.png" alt="wind icon" />
+                    <div>
+                        <p class="wind" id="wind">15km/h</p>
+                        <p>Wind</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="search">
+            <input type="number" placeholder="Enter Desired Temperature" id="temp-input">
+            <button id="temp-search-btn">Search Cities</button>
+        </div>
+
+        <div class="results" style="display: none;">
+            <h2>Results</h2>
+            <ul id="results-list"></ul>
+        </div>
+        @if (Model != null && Model.Any())
+
+        {
+          <form id="interestForm" method="post" asp-controller="Interest" asp-action="AddInterest">
+    @foreach (var country in Model)
+    {
+        <div class="country">
+            <label class="form-label mt-4">@country.CountryName</label>
+            <button type="submit" class="btn btn-primary">
+                <a href="@Url.Action("CountryTrips", "Browse", new { countryId = country.Id })">Choose</a>
+            </button>
+        </div>
+    }
+</form>
+        }
+        else
+        {
+            <p>No countries found.</p>
+        }
+        <div class="search">
+
+            <form id="interestForm" method="post" asp-controller="Interest" asp-action="saveInterest">
+                 <div class="country">
+                     <p>if you didn't find countyr match your interest request to add one'</p>
+                    <label class="form-label mt-4">Interest Name</label>
+                    <input type="text" name="Name" value="" placeholder="enter request country" class="form-control" />
+
+                    <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    </div>
+
+    <script>
+        const apiKey = '1ea612bc3bmshfedc7906ee95f44p143797jsn30acc89a755d';
+        const apiUrl = 'https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=';
+        const cities = ['New York', 'Los Angeles', 'Chicago', 'Paris', 'Oslo', 'Cairo', 'London', 'Barcelona', 'Istanbul', 'Rome', 'Miami', 'Berlin', 'Munich', 'Toronto', 'Zagreb', 'Washington D.C']; // List of cities to search
+
+        const searchBox = document.getElementById('city-input');
+        const searchBtn = document.getElementById('search-btn');
+        const tempInput = document.getElementById('temp-input');
+        const tempSearchBtn = document.getElementById('temp-search-btn');
+        const weatherIcon = document.getElementById('weather-icon');
+        const weatherDiv = document.querySelector('.weather');
+        const errorDiv = document.querySelector('.error');
+        const resultsDiv = document.querySelector('.results');
+        const resultsList = document.getElementById('results-list');
+
+        async function checkWeather(city) {
+            const url = apiUrl + city;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': apiKey,
+                    'X-RapidAPI-Host': 'weather-by-api-ninjas.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error('City not found');
+                }
+
+                const data = await response.json();
+                console.log(data);
+
+                document.getElementById('city-name').innerText = city;
+                document.getElementById('temperature').innerText = Math.round(data.temp) + '°C';
+                document.getElementById('humidity').innerText = data.humidity + '%';
+                document.getElementById('wind').innerText = data.wind_speed + 'km/h';
+
+                const weatherCondition = data.cloud_pct;
+
+                if (weatherCondition > 75) {
+                    weatherIcon.src = "../wwwroot/Images/clouds.png";
+                } else if (weatherCondition < 25) {
+                    weatherIcon.src = "../wwwroot/Images/clear.png";
+                } else if (weatherCondition > 50) {
+                    weatherIcon.src = "../wwwroot/Images/rain.png";
+                } else if (weatherCondition > 25 && weatherCondition <= 50) {
+                    weatherIcon.src = "../wwwroot/Images/drizzle.png";
+                } else {
+                    weatherIcon.src = "../wwwroot/Images/mist.png";
+                }
+
+                weatherDiv.style.display = 'block';
+                errorDiv.style.display = 'none';
+
+            } catch (error) {
+                errorDiv.style.display = 'block';
+                weatherDiv.style.display = 'none';
+            }
+        }
+
+        async function searchCitiesByTemperature(temp) {
+            resultsList.innerHTML = ''; // Clear previous results
+            let foundCities = [];
+
+            for (let city of cities) {
+                const url = apiUrl + city;
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        'X-RapidAPI-Key': apiKey,
+                        'X-RapidAPI-Host': 'weather-by-api-ninjas.p.rapidapi.com'
+                    }
+                };
+
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        continue; // Skip cities that can't be fetched
+                    }
+
+                    const data = await response.json();
+
+                    if (Math.round(data.temp) === temp) {
+                        foundCities.push(city);
+                    }
+                } catch (error) {
+                    console.error('Error fetching data for city:', city, error);
+                }
+            }
+
+            if (foundCities.length > 0) {
+                resultsDiv.style.display = 'block';
+                foundCities.forEach(city => {
+                    const li = document.createElement('li');
+                    li.textContent = city;
+                    resultsList.appendChild(li);
+                });
+            } else {
+                resultsDiv.style.display = 'none';
+            }
+        }
+
+        searchBtn.addEventListener('click', () => {
+            const city = searchBox.value.trim();
+            if (city) {
+                checkWeather(city);
+            }
+        });
+
+        tempSearchBtn.addEventListener('click', () => {
+            const temp = parseInt(tempInput.value.trim());
+            if (!isNaN(temp)) {
+                searchCitiesByTemperature(temp);
+            }
+        });
+    </script>
+</body>
+</html>
+

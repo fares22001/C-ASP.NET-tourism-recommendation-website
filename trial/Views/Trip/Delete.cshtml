@@ -1,0 +1,40 @@
+﻿@model trial.Models.Trips
+
+@{
+    ViewData["Title"] = "Delete Trip";
+}
+
+<h2>@ViewData["Title"]</h2>
+<form asp-action="Delete" method="post">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Delete Trip</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"></div>
+
+        <div class="mb-3">
+            <label asp-for="tripName">Trip Name</label>
+            <input asp-for="tripName" class="form-control" disabled />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" disabled rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Price">Price</label>
+            <input asp-for="Price" class="form-control" disabled />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Country.CountryName">Country</label>
+            <input asp-for="Country.CountryName" class="form-control" disabled value="@(Model.Country != null ? Model.Country.CountryName : "N/A")" />
+        </div>
+
+        <button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
+        <a asp-action="Index" asp-controller="Trip" class="btn btn-secondary" style="width:150px">Back to List</a>
+    </div>
+</form>

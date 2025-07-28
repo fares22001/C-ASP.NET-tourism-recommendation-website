@@ -1,0 +1,65 @@
+﻿@model IEnumerable<trial.Models.Trips>
+@{
+    ViewData["Title"] = "View All Trips";
+}
+
+<div class="container p-3">
+    <partial name="_Notifications"></partial>
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">View All Trips</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Trip" asp-action="New" class="btn btn-primary">
+                <i class="bi bi-plus"></i> &nbsp; Add New Item
+            </a>
+        </div>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col"> Trip Id</th>
+            <th scope="col"> Place name</th>
+            <th scope="col"> Description</th>
+            <th scope="col"> Price</th>
+            <th scope="col"> Image</th>
+            <th scope="col"> Country</th>
+            <th scope="col"> Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trip in Model)
+        {
+            <tr class="table-primary">
+                <td scope="row" width="10%">
+                    @trip.Id
+                </td>
+                <td scope="row" width="10%">
+                    @trip.tripName
+                </td>
+                <td scope="row" width="20%">
+                    @trip.Description
+                </td>
+                <td scope="row" width="10%">
+                    @trip.Price
+                </td>
+                <td scope="row" width="10%">
+                    <img src="@trip.imageSrc" style="width:48px" class="img-thumbnail" />
+                </td>
+                <td scope="row" width="10%">
+                    @(trip.Country != null ? trip.Country.CountryName : "N/A")
+                </td>
+                <td scope="row" width="20%">
+                    <a asp-controller="Trip" asp-action="Delete" asp-route-Id="@trip.Id" class="btn btn-sm btn-danger">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                    <a asp-controller="Trip" asp-action="Edit" asp-route-Id="@trip.Id" class="btn btn-sm btn-success">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
